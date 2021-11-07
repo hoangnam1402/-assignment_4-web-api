@@ -15,7 +15,7 @@ app.get('/',(req, res) =>{
     res.send('Welcome');
 })
 
-const MONGO_URI=`mongodb+srv://${process.env.dbUserName}:${process.env.dbPw}@cluster0.mbklg.mongodb.net/${process.env.dbName}`;
+const MONGO_URI=`mongodb+srv://admin:1@cluster0.mbklg.mongodb.net/lab4`;
 const connectBD = async () => {
     try {
         await mongoose.connect(MONGO_URI);
