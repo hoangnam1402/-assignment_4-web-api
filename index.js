@@ -27,7 +27,40 @@ const connectBD = async () => {
 
 connectBD();
 
+const ProductsSchema = new Schema({
+    name: { type: String },
+    type: { type: String },
+    price: { type: Number },
+})
 
+const productMode = mongoose.model('products', ProductsSchema)
+
+app.get('/products', async (req, res) => {
+    try {
+        const products = await productMode.find({});
+        res.status(200).json({ products: products });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Internal Server Error"})
+    }
+})
+
+app.post('/products', async (req, res) => {
+    try {
+        const { name, type, price} = req.body;
+        const newP = new productMode({
+            name: name, 
+            type: type, 
+            price: price, 
+        });
+        await newP.save();
+        res.status(201).json({ success: true, message: "saved", newP });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Internal Server Error"
+        });
+    }
+});
 
 app.listen(port,()=>{
     console.log(`Listening at http://localhost:${port}`)
